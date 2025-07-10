@@ -1,0 +1,47 @@
+# Site settings
+title: "xiaoyaou"
+description: "技术分享"
+baseurl: ""
+url: "https://xiaoyaou.github.io"
+
+# Permalink structure (without categories)
+permalink: /:year/:month/:day/:title:output_ext
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Markdown settings
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+      css_class: "highlight"
+  hard_wrap: false
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+  enable_coderay: false
+
+# Plugins
+plugins:
+  - jekyll-sitemap
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "xiaoyaou"
+
+# Exclude from processing
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock

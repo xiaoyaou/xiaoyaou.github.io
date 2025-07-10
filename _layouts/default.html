@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    
+    <!-- Syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    
+    <!-- language support -->
+    <script src="{{ '/assets/js/languages.js' | relative_url }}"></script>
+    
+    <!-- Copy code functionality -->
+    <script src="{{ '/assets/js/copy-code.js' | relative_url }}"></script>
+    
+    <!-- Include MathJax if the page has mathematical formulas -->
+    {% if page.math %}
+        {% include mathjax.html %}
+    {% endif %}
+</head>
+<body>
+    <div class="container">
+        {{ content }}
+    </div>
+</body>
+</html>
