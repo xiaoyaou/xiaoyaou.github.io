@@ -7,6 +7,8 @@ url: "https://xiaoyaou.github.io"
 # Permalink structure (without categories)
 permalink: /:year/:month/:day/:title:output_ext
 
+timezone: "Asia/Shanghai"
+
 # Build settings
 markdown: kramdown
 highlighter: rouge
