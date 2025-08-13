@@ -9,7 +9,7 @@ tags: [Rust, ECS, bevy_ui]
 
 > `bevy_ui`未来面临的挑战与机遇
 >
-> Alice I. Cecile, Rose Peck | 2023-11-27
+> Alice I. Cecile, Rose Peck &#x7c; 2023-11-27
 >
 > 原文：[So you want to build an ECS-backed GUI framework](https://www.leafwing-studios.com/blog/ecs-gui-framework/)
 
