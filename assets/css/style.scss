@@ -254,6 +254,74 @@ th {
     border-color: transparent;
 }
 
+.post-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.post-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.post-card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.post-card h3 a {
+    color: #24292e;
+    text-decoration: none;
+}
+
+.post-card h3 a:hover {
+    color: #0366d6;
+}
+
+.post-meta-index {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.post-meta-index .post-date {
+    margin-right: 1rem;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.post-meta-index .post-date::before {
+    font-size: 0.7rem;
+    line-height: 1;
+}
+
+.post-meta-index .tag {
+    margin: 0;
+    padding: 0.1rem 0.6rem 0 1.3rem;
+    font-size: 0.7rem;
+}
+
+.post-meta-index .tag::before {
+    left: 0.3rem;
+    font-size: 0.6rem;
+}
+
 /* Sticky header - header 元素作为容器 */
 .sticky-header {
     position: sticky;
@@ -344,6 +412,16 @@ header.sticky-header h1.post-title {
     .tag:before {
         left: 0.4rem; /* 移动端稍微调整图标位置 */
         font-size: 0.65rem; /* 移动端缩小图标大小 */
+    }
+    
+    /* Mobile post cards */
+    .post-cards {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    .post-card {
+        padding: 1rem;
     }
 }
 
