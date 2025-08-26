@@ -3,6 +3,7 @@ layout: post
 title: "代码高亮测试"
 date: 2025-07-09
 tags: [测试, 代码高亮]
+toc: true
 ---
 
 {:toc}
