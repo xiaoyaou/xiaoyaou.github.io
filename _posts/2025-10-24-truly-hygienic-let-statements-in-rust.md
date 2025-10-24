@@ -104,6 +104,8 @@ Remon 以前从未见过这个错误，但并未气馁。毕竟，她还有一�
 
 因此，她在宏中引入了这个新作用域，并在其中定义了一个伪函数。恰好函数在模式中从不有效，所以`x @ _`技巧不再需要。
 
+{% raw %}
+
 ```rust
 macro_rules! oh_my {
     () => {{
@@ -114,6 +116,8 @@ macro_rules! oh_my {
     }};
 }
 ```
+
+{% endraw %}
 
 > And despite Wolfie’s attempts to break it, this iteration remains hygienic even in the presence of strange environments.
 
