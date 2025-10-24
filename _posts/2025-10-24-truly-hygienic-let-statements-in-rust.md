@@ -25,10 +25,10 @@ Remon 是一位负责任的库开发者。她关心稳定性、灵活性和正�
 
 ```rust
 macro_rules! oh_my {
-	() => {
-		let Ok(x) = read_input() else { return Err(Error) };
-		$crate::process(x);
-	};
+    () => {
+        let Ok(x) = read_input() else { return Err(Error) };
+        $crate::process(x);
+    };
 }
 ```
 
@@ -67,10 +67,10 @@ oh_my!();
 
 ```rust
 macro_rules! oh_my {
-	() => {
-		let Ok(x @ _) = read_input() else { return Err(Error) };
-		$crate::process(x);
-	};
+    () => {
+        let Ok(x @ _) = read_input() else { return Err(Error) };
+        $crate::process(x);
+    };
 }
 ```
 
@@ -106,11 +106,11 @@ Remon 以前从未见过这个错误，但并未气馁。毕竟，她还有一�
 
 ```rust
 macro_rules! oh_my {
-	() => {{
+    () => {{
         #[allow(dead_code)]
         fn x() {}
-		let Ok(x) = read_input() else { return Err(Error) };
-		$crate::process(x);
+        let Ok(x) = read_input() else { return Err(Error) };
+        $crate::process(x);
     }};
 }
 ```
