@@ -44,7 +44,7 @@ Where real GATs fall short
 <details markdown="1">
 <summary>原文</summary>
 
-[GATs](https://github.com/rust-lang/rust/issues/44265) are an unstable feature of Rust, likely to be stabilized in the next few versions, that allow you to add generic parameters on associated types in traits. The motivating example for this feature is the “lending iterator” trait, which allows you to define an iterator for which only one of its items can exist at any given time. With lifetime GATs, its signature would look something like this:
+[GATs](https://github.com/rust-lang/rust/issues/44265) are an unstable feature of Rust, likely to be stabilized in the next few versions, that allow you to add generic parameters on associated types in traits. The motivating example for this feature is the "lending iterator" trait, which allows you to define an iterator for which only one of its items can exist at any given time. With lifetime GATs, its signature would look something like this:
 </details>
 
 ```rust
@@ -148,7 +148,7 @@ print_items::<WindowsMut<'_, _, 2>>(windows_mut(&mut [1, 2, 3]));
 <details markdown="1">
 <summary>原文</summary>
 
-This should obviously compile since &mut [i32; 2] is definitely Debug. So we can just run `cargo run` and see the ou–
+This should obviously compile since `&mut [i32; 2]` is definitely `Debug`. So we can just run `cargo run` and see the ou–
 </details>
 
 ```
@@ -326,7 +326,7 @@ So, what can we do in the meantime?
 Workaround 1: dyn Trait as a HKT
 </details>
 
-正如 [@jix](https://github.com/jix) 在 [这篇大纲](https://gist.github.com/jix/42d0e4a36ace4c618a59f0ba03be5bf5) 中最先分享的，一个可行方案是把 `dyn Trait` 当作一种 HKT 使用，因为 `dyn Trait` 的类型里可以写 HRTB，并且关联类型可以随 HRTB 的生命周期变化。
+正如 [@jix](https://github.com/jix) 在 [这篇纲要](https://gist.github.com/jix/42d0e4a36ace4c618a59f0ba03be5bf5) 中最先分享的，一个可行方案是把 `dyn Trait` 当作一种 HKT 使用，因为 `dyn Trait` 的类型里可以写 HRTB，并且关联类型可以随 HRTB 的生命周期变化。
 
 <details markdown="1">
 <summary>原文</summary>
@@ -787,7 +787,7 @@ where
 But just as before `where` clauses in HRTBs unfortunately don’t exist yet, so it looks like this is just another dead end. What a shame.
 </details>
 
-## HRTB 的隐式约束
+### HRTB 的隐式约束
 
 <details markdown="1">
 <summary>原文</summary>
@@ -808,7 +808,7 @@ HRTB implicit bounds
 > <details markdown="1">
 > <summary>原文</summary>
 >
-> Many years pass. You have grown accustomed to nature: you have seen plants grow, wither and die before your eyes more times than smallvec has had CVEs, and the seasons are now no more than a blur — day, night, summer, winter all morphing into one another and passing faster than the blink of an eye. You sleep deeply and peacefully every night, safe and comfortable in the knowledge that you’ll never have to deal with wall of text linker errors ever again. You have become so familiar with the pathways and routes around your home that you can walk them in your sleep. Every single nook and cranny of the place down to the most minute detail is etched deep into your brain: the position of each plant, the location of every nest, the size and shape of each pebble.
+> Many years pass. You have grown accustomed to nature: you have seen plants grow, wither and die before your eyes more times than `smallvec` has had CVEs, and the seasons are now no more than a blur — day, night, summer, winter all morphing into one another and passing faster than the blink of an eye. You sleep deeply and peacefully every night, safe and comfortable in the knowledge that you’ll never have to deal with wall of text linker errors ever again. You have become so familiar with the pathways and routes around your home that you can walk them in your sleep. Every single nook and cranny of the place down to the most minute detail is etched deep into your brain: the position of each plant, the location of every nest, the size and shape of each pebble.
 > </details>
 >
 > 所以，在一个寒冷的三月清晨，你第一眼就注意到灌木下露出一截不寻常的白色薄片，也就不足为奇了。走近一看，那是一张纸，被晨露打得微微潮湿。你捡起它，盯着纸上那些神秘符号看了许久；慢慢地——很慢很慢地——一段模糊记忆开始回到脑海。没错，这是 “Rust”。而纸上的这段 “Rust”，似乎是一段很短的程序：
@@ -851,7 +851,7 @@ HRTB implicit bounds
 > <details markdown="1">
 > <summary>原文</summary>
 >
-> Tentatively, you open a text editor, and begin copying out the contents of that paper inside it. Now, how do I build it again? Shipment? Freight? Haul? No, it was something different…ah, cargo, that was it. Into the shell you type out the words you haven’t seen for so, so long:
+> Tentatively, you open a text editor, and begin copying out the contents of that paper inside it. Now, how do I build it again? Shipment? Freight? Haul? No, it was something different…ah, `cargo`, that was it. Into the shell you type out the words you haven’t seen for so, so long:
 > </details>
 > 
 > ```shell
@@ -863,7 +863,7 @@ HRTB implicit bounds
 > <details markdown="1">
 > <summary>原文</summary>
 >
-> You take a deep breath, and then press the enter key. The fan whirrs as the CPU starts into life. For a short moment that feels like an eon, Cargo displays “Building” — but eventually it finishes, and as it does, one line of text rolls down the screen:
+> You take a deep breath, and then press the enter key. The fan whirrs as the CPU starts into life. For a short moment that feels like an eon, Cargo displays "Building" — but eventually it finishes, and as it does, one line of text rolls down the screen:
 > </details>
 > 
 > ```
@@ -1314,12 +1314,12 @@ error: implementation of `LendingIteratorLifetime` is not general enough
 …ah. Another cryptic error.
 </details>
 
-我认为这里发生的事和[方案 1](#workaround-1-dyn-trait-as-a-hkt)遇到的易用性问题本质相同：编译器存在某个 bug，导致这种写法在具体类型上失效。
+我认为这里发生的事和[方案 1](#方案-1把-dyn-trait-当作-hkt)遇到的易用性问题本质相同：编译器存在某个 bug，导致这种写法在具体类型上失效。
 
 <details markdown="1">
 <summary>原文</summary>
 
-I believe what’s happening here is the same ergonomics issue as faced with [workaround 1](#workaround-1-dyn-trait-as-a-hkt): There’s some compiler bug which makes this not work with concrete types.
+I believe what’s happening here is the same ergonomics issue as faced with [workaround 1](#方案-1把-dyn-trait-当作-hkt): There’s some compiler bug which makes this not work with concrete types.
 </details>
 
 因此修复方法也很直接：把它移进泛型函数！而且这个版本确实可以编译：
