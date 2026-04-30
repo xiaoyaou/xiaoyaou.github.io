@@ -431,3 +431,36 @@ header.sticky-header h1.post-title {
         display: none;
     }
 }
+
+/* 原文链接容器样式 - 紧凑风格 */
+.post-original-link {
+    margin: 0.5rem 0 0 0;
+    padding: 0 1rem;
+    background-color: #f6f8fa;
+    border-radius: 4px; /* 稍微减小圆角以匹配紧凑感 */
+    font-size: 0.85rem; /* 稍微缩小字体 */
+    line-height: 1.4; /* 减小行高 */
+    text-align: right;
+    overflow: hidden;
+}
+
+/* 链接本身样式 */
+.post-original-link a {
+    display: block;
+    color: #6a737d;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    /* 单行省略核心代码 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/* 鼠标悬停效果 - 深灰色 + 下划线 */
+.post-original-link a:hover {
+    color: #24292e; /* 悬停时变为深灰色 */
+    text-decoration: underline;
+}
+
