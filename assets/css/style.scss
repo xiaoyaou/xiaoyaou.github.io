@@ -332,7 +332,38 @@ th {
     padding: 1rem 0;
     margin: 0 0 1rem 0;
     z-index: 100;
-    text-align: center;
+    /* Flex 布局核心 */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 左侧容器 */
+.header-left {
+    flex: 1; /* 占据剩余空间，帮助中间标题居中 */
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* 右侧容器 (占位用) */
+.header-right {
+    flex: 1; /* 占据相同空间，确保标题严格居中 */
+}
+
+/* 首页链接样式 */
+.home-link {
+    display: flex;
+    align-items: center;
+    color: #586069; /* 灰色，低调 */
+    transition: color 0.2s ease;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.home-link:hover {
+    color: #0366d6; /* 悬停变蓝 */
+    background-color: #f6f8fa; /* 轻微背景反馈 */
+    text-decoration: none;
 }
 
 /* 调整 sticky header 内的 h1 样式 - 使用更高优先级 */
@@ -349,6 +380,13 @@ header.sticky-header h1.post-title {
     padding-bottom: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
+
+    /* 确保标题在 Flex 容器中居中且不挤压 */
+    flex: 0 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60%; /* 限制最大宽度，防止长标题覆盖按钮 */
 }
 
 /* Responsive */
@@ -371,15 +409,17 @@ header.sticky-header h1.post-title {
     
     /* Mobile sticky header adjustments */
     .sticky-header {
-        padding: 0.5rem 0;
-        margin-left: -1rem;
-        margin-right: -1rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding: 0.5rem 0.8rem;
     }
     
     .sticky-header h1 {
         font-size: 1.25rem !important;
+        max-width: 50%; /* 移动端给按钮留更多空间 */
+    }
+
+    .home-link svg {
+        width: 18px;
+        height: 18px;
     }
     
     /* 移动端也使用更高优先级选择器 */

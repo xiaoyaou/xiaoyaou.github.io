@@ -4,8 +4,21 @@ layout: default
 
 <article class="post">
     <!-- 独立的 sticky 标题 -->
-    <header class="sticky-header"><h1 class="post-title">{{ page.title }}</h1></header>
-    
+    <header class="sticky-header">
+        <div class="header-left">
+            <a href="/" class="home-link" title="首页">
+                <!-- 简单的 SVG 回家图标 -->
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            </a>
+        </div>
+
+        <h1 class="post-title">{{ page.title }}</h1>
+
+        <div class="header-right">
+            <!-- 占位符，用于平衡 Flex 布局，确保标题严格居中 -->
+        </div>
+    </header>
+
     <!-- 文章元信息（日期和标签） -->
     <div class="post-meta">
         <span class="post-date">{{ page.date | date: "%Y-%m-%d" }}</span>
