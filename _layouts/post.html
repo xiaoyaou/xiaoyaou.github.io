@@ -17,6 +17,10 @@ layout: default
     </div>
 
     <div class="post-content">
-	{% include toc.html html=content h_min=2 h_max=3 %}
+        {% if page.toc %}
+            {% include toc.html html=content h_min=2 h_max=3 %}
+            <hr>
+        {% endif %}
+        {{ content }}
     </div>
 </article>
