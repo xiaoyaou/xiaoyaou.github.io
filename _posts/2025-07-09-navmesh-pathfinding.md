@@ -3,11 +3,10 @@ layout: post
 title: "2D导航网格寻路"
 date: 2025-07-09
 tags: [Rust, 寻路算法]
+original: https://gabdube.github.io/articles/navmesh_pathfinding/navmesh_pathfinding.html
 ---
 
 # <center>2D 导航网格</center>
-
-原文：[2D Navmesh Pathfinding](https://gabdube.github.io/articles/navmesh_pathfinding/navmesh_pathfinding.html)
 
 寻路是一项复杂的工作。当你使用现成的游戏引擎（如 Unity）时，这不是需要操心的问题。然而，对于自研游戏引擎来说，开发一套寻路系统则是必不可少的，并且（大部分情况下）需要从头开始编写代码。
 

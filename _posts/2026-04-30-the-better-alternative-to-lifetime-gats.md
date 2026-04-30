@@ -4,6 +4,7 @@ title: "生命周期 GAT 的更优替代方案"
 date: 2026-04-30
 tags: [Rust, GAT, lifetime, HRTB]
 toc: true
+original: https://sabrinajewson.org/blog/the-better-alternative-to-lifetime-gats
 ---
 
 # 生命周期 GAT 的更优替代方案
