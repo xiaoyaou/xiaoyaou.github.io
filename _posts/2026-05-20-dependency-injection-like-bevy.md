@@ -1373,6 +1373,8 @@ impl_system_param!(T1, T2, T3);
 
 ## 附录：完整代码
 
+<details markdown="1">
+<summary>代码</summary>
 ```rust
 use std::any::{Any, TypeId};
 use std::cell::{Ref, RefCell, RefMut};
@@ -1610,4 +1612,5 @@ expand_times!(impl_tuple_param @ (
 ));
 
 ```
+</details>
 
