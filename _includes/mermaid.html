@@ -1,9 +1,16 @@
 <!-- Mermaid for diagram rendering -->
 <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    
+    // 禁用自动加载，手动控制渲染
     mermaid.initialize({ 
-        startOnLoad: true,
+        startOnLoad: false,
         theme: 'default',
         securityLevel: 'loose'
+    });
+    
+    // 页面加载完成后，手动初始化所有 mermaid 代码块
+    document.addEventListener('DOMContentLoaded', () => {
+        mermaid.init(undefined, '.language-mermaid');
     });
 </script>
