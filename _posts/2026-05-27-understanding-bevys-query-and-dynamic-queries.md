@@ -4,6 +4,7 @@ title: "理解 bevy `Query` 及其动态查询"
 date: 2026-05-27
 tags: [Bevy, Query, Dynamic Query]
 original: https://github.com/bevyengine/bevy/discussions/9816
+mermaid: true
 ---
 
 # 理解 bevy 的 `Query` 以及动态查询

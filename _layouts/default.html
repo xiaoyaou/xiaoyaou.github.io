@@ -23,6 +23,11 @@
     {% if page.math %}
         {% include mathjax.html %}
     {% endif %}
+    
+    <!-- Include Mermaid if the page has diagrams -->
+    {% if page.mermaid %}
+        {% include mermaid.html %}
+    {% endif %}
 </head>
 <body>
     <div class="container">
