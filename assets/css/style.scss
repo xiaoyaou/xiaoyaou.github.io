@@ -122,6 +122,11 @@ pre code {
     /* 不设置 color，让 highlight.js 完全控制颜色 */
 }
 
+.language-mermaid[data-processed=true] {
+    display: block !important;
+    text-align: center;
+}
+
 /* Copy button for code blocks */
 .copy-button {
     position: absolute;
