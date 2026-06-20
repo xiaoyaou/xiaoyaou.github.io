@@ -4,6 +4,7 @@ title: "main 前生命周期"
 date: 2026-06-20
 tags: [Rust, linktime, pre-main]
 original: https://grack.com/blog/2026/06/11/life-before-main/
+mermaid: true
 ---
 
 # Life Before Main
