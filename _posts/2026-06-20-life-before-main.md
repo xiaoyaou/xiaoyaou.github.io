@@ -63,7 +63,7 @@ This post is a deep dive into some technical details of how Rust source becomes 
 <details markdown="1">
 <summary>原文</summary>
 
-What might not be familiar to most developers is *how* you get into the main function. You see, under the hood for every language is the **runtime**. C has one: the C runtime that you might [recognize as `libc`](https://en.wikipedia.org/wiki/C_standard_library). Rust also has its own runtime: the Rust standard library. And because C is the lingua franca of runtimes for most executable code[^1], Rust builds its own runtime atop of C's, effectively building its own higher-level abstraction encapsulating C's.
+What might not be familiar to most developers is *how* you get into the main function. You see, under the hood for every language is the **runtime**. C has one: the C runtime that you might [recognize as `libc`](https://en.wikipedia.org/wiki/C_standard_library). Rust also has its own runtime: the Rust standard library. And because C is the lingua franca of runtimes for most executable code<sup>1</sup>, Rust builds its own runtime atop of C's, effectively building its own higher-level abstraction encapsulating C's.
 
 </details>
 
@@ -81,7 +81,7 @@ A runtime is a bit fuzzy to define. It's both the executable code that lives on 
 <details markdown="1">
 <summary>原文</summary>
 
-There's an entire ecosystem of processing that happens before the function you declared as `main` starts up. C uses this to configure allocation, file access, thread-local storage and other C runtime services. Rust uses this time to configure parts of its own language and runtime. Specifically, Rust has infrastructure to handle panics and unwinding. Rust also needs to translate the C-style program arguments[^2] into its own [`std::env::args`](https://doc.rust-lang.org/beta/std/env/fn.args.html) interface. The machinery for all this is [visible in the Rust compiler project](https://github.com/rust-lang/rust/blob/main/compiler/rustc_codegen_ssa/src/base.rs#L501).
+There's an entire ecosystem of processing that happens before the function you declared as `main` starts up. C uses this to configure allocation, file access, thread-local storage and other C runtime services. Rust uses this time to configure parts of its own language and runtime. Specifically, Rust has infrastructure to handle panics and unwinding. Rust also needs to translate the C-style program arguments<sup>2</sup> into its own [`std::env::args`](https://doc.rust-lang.org/beta/std/env/fn.args.html) interface. The machinery for all this is [visible in the Rust compiler project](https://github.com/rust-lang/rust/blob/main/compiler/rustc_codegen_ssa/src/base.rs#L501).
 
 </details>
 
@@ -110,7 +110,7 @@ By not taking advantage of this environment, you are missing out on a very usefu
 <details markdown="1">
 <summary>原文</summary>
 
-A binary starts when the operating system's loader[^3] - the part of the OS that loads the binary into memory and sets up the environment - hands off control. The runtime is responsible for accepting the hand-off from the loader. There's a platform-specific hook on every OS that accepts the hand-off - to some extent this is the *real* main. On Linux, the entry point [is stored in the `e_entry` field](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#:~:text=e_entry) of the ELF header, and by default, the linker places the address of a symbol named `_start` there. A similar hook [exists on Windows](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#:~:text=AddressOfEntryPoint), and boots the executable in [a function named `_WinMainCRTStartup`](https://stackoverflow.com/questions/1583193/what-functions-does-winmaincrtstartup-perform). At this point the C runtime has a chance to configure itself, and the way that all runtimes do this is via initialization functions.
+A binary starts when the operating system's loader<sup>3</sup> - the part of the OS that loads the binary into memory and sets up the environment - hands off control. The runtime is responsible for accepting the hand-off from the loader. There's a platform-specific hook on every OS that accepts the hand-off - to some extent this is the *real* main. On Linux, the entry point [is stored in the `e_entry` field](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#:~:text=e_entry) of the ELF header, and by default, the linker places the address of a symbol named `_start` there. A similar hook [exists on Windows](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#:~:text=AddressOfEntryPoint), and boots the executable in [a function named `_WinMainCRTStartup`](https://stackoverflow.com/questions/1583193/what-functions-does-winmaincrtstartup-perform). At this point the C runtime has a chance to configure itself, and the way that all runtimes do this is via initialization functions.
 
 </details>
 
@@ -137,7 +137,7 @@ Over time, linkers developed the ability to discard unused code before even writ
 <details markdown="1">
 <summary>原文</summary>
 
-The most popular method[^4] of declaring init code came from GCC: `__attribute__((constructor))`. The way this worked was to place a list of init functions into a contiguous chunk of the binary on disk. When the C runtime started, it could walk through each of these functions and call them, allowing various bits of the C runtime to request initialization without strongly coupling subsystems, and allowing the linker to jettison unused subsystems, init code and all.
+The most popular method<sup>4</sup> of declaring init code came from GCC: `__attribute__((constructor))`. The way this worked was to place a list of init functions into a contiguous chunk of the binary on disk. When the C runtime started, it could walk through each of these functions and call them, allowing various bits of the C runtime to request initialization without strongly coupling subsystems, and allowing the linker to jettison unused subsystems, init code and all.
 
 </details>
 
@@ -155,7 +155,7 @@ Eventually the need for constructor ordering became important enough that constr
 <details markdown="1">
 <summary>原文</summary>
 
-On most platforms[^5], the linker was called in to do the priority work: each platform ended up with a way to prioritize the order in which data gets written to sections, which allowed for the C runtime to end up with a well-ordered list of function pointers[^6].
+On most platforms<sup>5</sup>, the linker was called in to do the priority work: each platform ended up with a way to prioritize the order in which data gets written to sections, which allowed for the C runtime to end up with a well-ordered list of function pointers<sup>6</sup>.
 
 </details>
 
@@ -219,11 +219,11 @@ fn main() {
 <details markdown="1">
 <summary>原文</summary>
 
-> The examples in this post will work on Linux and various BSDs, but are not designed to be cross-platform examples. For example, macOS has `start` and `stop` symbols, but they are named differently[^7]. Windows does not support `start` and `stop` symbols, but has a set of rules for sorting sections that is effectively equivalent.
+> The examples in this post will work on Linux and various BSDs, but are not designed to be cross-platform examples. For example, macOS has `start` and `stop` symbols, but they are named differently<sup>7</sup>. Windows does not support `start` and `stop` symbols, but has a set of rules for sorting sections that is effectively equivalent.
 >
 > Because platforms are so widely variable, we'll be introducing the [`ctor`](https://crates.io/crates/ctor) and [`link-section`](https://crates.io/crates/link-section) crates (from the [`linktime`](https://github.com/mmastrac/linktime) project) as a way to abstract away platform-specific differences and hide the general complexity of linker work.
 >
-> The excellent [`inventory`](https://crates.io/crates/inventory) and [`linkme`](https://crates.io/crates/linkme) are two other very popular crates built on the same principles, but have limitations[^8] that make them less suitable for the examples in this post.
+> The excellent [`inventory`](https://crates.io/crates/inventory) and [`linkme`](https://crates.io/crates/linkme) are two other very popular crates built on the same principles, but have limitations<sup>8</sup> that make them less suitable for the examples in this post.
 >
 > If you'd like to learn more, the `link-section` crate contains a [detailed report on platform-specific behaviour](https://crates.io/crates/link-section#:~:text=Platform%20Support).
 
@@ -392,7 +392,7 @@ This trips up most developers that encounter it for the first time, but the link
 <details markdown="1">
 <summary>原文</summary>
 
-Specifying start and end symbols for every section can be complex and tedious in linker scripts, so many linkers[^9] eventually gained a feature where they could automatically define symbols bounding all sections in the executable. E.g., for GNU toolchains, a section named `MY_SECTION` will automatically have symbols `__start_MY_SECTION` and `__stop_MY_SECTION` defined. macOS has [a similar pattern](https://discourse.llvm.org/t/lld-support-for-ld64-mach-o-linker-synthesised-symbols/45145) where it synthesizes a `section$start` and `section$end` symbol for each section.
+Specifying start and end symbols for every section can be complex and tedious in linker scripts, so many linkers<sup>9</sup> eventually gained a feature where they could automatically define symbols bounding all sections in the executable. E.g., for GNU toolchains, a section named `MY_SECTION` will automatically have symbols `__start_MY_SECTION` and `__stop_MY_SECTION` defined. macOS has [a similar pattern](https://discourse.llvm.org/t/lld-support-for-ld64-mach-o-linker-synthesised-symbols/45145) where it synthesizes a `section$start` and `section$end` symbol for each section.
 
 </details>
 
@@ -401,7 +401,7 @@ Specifying start and end symbols for every section can be complex and tedious in
 <details markdown="1">
 <summary>原文</summary>
 
-In the GNU linker, those sections not explicitly defined in the linker script are called "orphan sections"[^10]. One important thing to note: if (and only if!) a section's name is compatible with a C symbol name, the linker will automatically define a `_start`- and `_stop`-prefixed symbol for the section. In the example you'll see below, the section name `our_strings` that we used works, but if we had chosen `our.strings` or `.our_strings` it would not have!
+In the GNU linker, those sections not explicitly defined in the linker script are called "orphan sections"<sup>10</sup>. One important thing to note: if (and only if!) a section's name is compatible with a C symbol name, the linker will automatically define a `_start`- and `_stop`-prefixed symbol for the section. In the example you'll see below, the section name `our_strings` that we used works, but if we had chosen `our.strings` or `.our_strings` it would not have!
 
 </details>
 
@@ -681,7 +681,7 @@ Listing all items
 <details markdown="1">
 <summary>原文</summary>
 
-The example above assumes that the linked data is immutable. But that's only half the power of using linker organization for data. Mutability in global static data is a [common problem with well-known solutions](https://doc.rust-lang.org/reference/interior-mutability.html) in standard Rust. We could potentially use Rust's built-in tools for interior mutability like mutexes, or atomic types, for example. Each of those comes with *some* runtime cost. If they are "uncontended" they aren't expensive, but they are not necessarily free.[^11]
+The example above assumes that the linked data is immutable. But that's only half the power of using linker organization for data. Mutability in global static data is a [common problem with well-known solutions](https://doc.rust-lang.org/reference/interior-mutability.html) in standard Rust. We could potentially use Rust's built-in tools for interior mutability like mutexes, or atomic types, for example. Each of those comes with *some* runtime cost. If they are "uncontended" they aren't expensive, but they are not necessarily free.<sup>11</sup>
 
 </details>
 
@@ -690,7 +690,7 @@ The example above assumes that the linked data is immutable. But that's only hal
 <details markdown="1">
 <summary>原文</summary>
 
-But what if we want to minimize the overhead of runtime data access? Immutable data is trivial: Rust allows safe concurrent access to immutable data by default[^12]. Rust has strict requirements for mutable data, however. There are two requirements to safely mutate data: (1) the modifications must be done in a thread-safe manner, and (2), there must never be more than one reference to the data if a mutable reference exists.
+But what if we want to minimize the overhead of runtime data access? Immutable data is trivial: Rust allows safe concurrent access to immutable data by default<sup>12</sup>. Rust has strict requirements for mutable data, however. There are two requirements to safely mutate data: (1) the modifications must be done in a thread-safe manner, and (2), there must never be more than one reference to the data if a mutable reference exists.
 
 </details>
 
@@ -699,7 +699,7 @@ But what if we want to minimize the overhead of runtime data access? Immutable d
 <details markdown="1">
 <summary>原文</summary>
 
-At the beginning of this post, we mentioned that life-before-main is a useful place to bootstrap because no threads are running unless we start them. And the solution to (1) is trivial if the data is currently accessible to a single thread only! We don't need to do anything atomically; we only need to ensure that all of the changes we make to that data ["happen before"](https://marabos.nl/atomics/) any reads to the data. In a single-threaded environment, "happens before" is automatic[^13]. This means that we can mutate data in a link-section before main and it will be safe to access, lock free, from any thread after main.
+At the beginning of this post, we mentioned that life-before-main is a useful place to bootstrap because no threads are running unless we start them. And the solution to (1) is trivial if the data is currently accessible to a single thread only! We don't need to do anything atomically; we only need to ensure that all of the changes we make to that data ["happen before"](https://marabos.nl/atomics/) any reads to the data. In a single-threaded environment, "happens before" is automatic<sup>13</sup>. This means that we can mutate data in a link-section before main and it will be safe to access, lock free, from any thread after main.
 
 </details>
 
@@ -726,7 +726,7 @@ The pre-main environment satisfies *both* (1) and (2), without needing to reach 
 <details markdown="1">
 <summary>原文</summary>
 
-There's also one additional gotcha with linker sections we need to be very careful with: the slice that contains all of the items in a section is an *alias* to the static item that lives in the section. The rules about aliasing apply to both the slice and the static item, and you *must* ensure that static items are placed in `UnsafeCell` to safely mutate them from the slice[^14]. Rust does not allow a static item to be modified through other means. With static items that aren't wrapped in an `UnsafeCell`, LLVM may consider itself free to cache, reorder or otherwise make assumptions about the data itself. `UnsafeCell` itself is not `Sync`, so you'll need to add your own wrapper types on top of this!
+There's also one additional gotcha with linker sections we need to be very careful with: the slice that contains all of the items in a section is an *alias* to the static item that lives in the section. The rules about aliasing apply to both the slice and the static item, and you *must* ensure that static items are placed in `UnsafeCell` to safely mutate them from the slice<sup>14</sup>. Rust does not allow a static item to be modified through other means. With static items that aren't wrapped in an `UnsafeCell`, LLVM may consider itself free to cache, reorder or otherwise make assumptions about the data itself. `UnsafeCell` itself is not `Sync`, so you'll need to add your own wrapper types on top of this!
 
 </details>
 
@@ -1039,7 +1039,7 @@ main 前构造函数[有局限性](https://docs.rs/ctor/latest/ctor/life_before_
 <details markdown="1">
 <summary>原文</summary>
 
-Pre-main constructor functions [have limitations](https://docs.rs/ctor/latest/ctor/life_before_main/index.html): they cannot panic[^15], Rust does not guarantee that all stdlib functions are available, and the order that the initialization functions are called within a given priority level is not guaranteed and highly platform-dependent. With careful planning, these limitations may be worked around but life-before-main may not be correct for subtle and difficult-to-debug reasons.
+Pre-main constructor functions [have limitations](https://docs.rs/ctor/latest/ctor/life_before_main/index.html): they cannot panic<sup>15</sup>, Rust does not guarantee that all stdlib functions are available, and the order that the initialization functions are called within a given priority level is not guaranteed and highly platform-dependent. With careful planning, these limitations may be worked around but life-before-main may not be correct for subtle and difficult-to-debug reasons.
 
 </details>
 
@@ -1142,21 +1142,21 @@ Thanks to my lovely wife [Mia](https://github.com/ojeda-e), [Benjamin Woodruff](
 <details markdown="1">
 <summary>原文</summary>
 
-1. Go is a notable exception in that it avoids the C runtime on some platforms, only using libc as an ABI stability boundary on platforms that require it e.g., Apple's `libSystem.dylib` and OpenBSD's `libc`.
-2. On Windows, these are DOS-style (which were in turn derived from CP/M-style) arguments.
-3. Before the loader runs, the program is just some bytes on a disk and the loader (which can be the kernel itself or a user-space system component like `ld.so` on Linux) maps those bytes into memory and hands off control.
-4. The most popular method… in the humble author's opinion.
-5. macOS does not support this. The C runtime does its own initialization and then just runs every user constructor function in the order the linker saw them.
-6. AIX has a special symbol naming convention for constructor functions: the `sinit` prefix, followed by a hexadecimal priority value.
-7. This will be discussed later in the post, but macOS synthesizes a `section$start` and `section$end` symbol for each section instead of a `__start_` and `__stop_` symbol.
-8. `linkme` creates distributed slices, but does not currently support WASM, and does not support mutable section data required to sort a section. `inventory` supports WASM, but requires a `ctor`-like function per item in the section.
-9. The Windows linker does not support this feature, but instead [defines an overall sort order for *symbols*](https://devblogs.microsoft.com/oldnewthing/20181107-00/?p=100155) that is effectively equivalent.
-10. Orphan sections have [a complicated algorithm for placement](https://maskray.me/blog/2024-06-02-understanding-orphan-sections).
-11. For example, an atomic value must always be re-read, and that may incur use of CPU cache which is pretty numerous these days, but definitely not infinite.
-12. [As long as it's `Sync`](https://doc.rust-lang.org/book/ch16-04-extensible-concurrency-sync-and-send.html). `Sync` means that it's safe to share a reference to the data between threads.
-13. This is a complex topic, and [Rust Atomics and Locks](https://marabos.nl/atomics/) is the best resource for learning more. Starting a new thread means that all the previous writes "happen before" anything on the new thread, but we'll leave the proof of this for the reader (or possibly a future post).
-14. Even taking a reference to a mutable static [is disallowed by default in Rust 2024!](https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html)
-15. Well, more accurately they *can* panic but they *shouldn't* panic. In fact you'll get a *double* panic: `thread '<unnamed>' panicked at ...: pre-main panic!` and then immediately `thread '<unnamed>' panicked at ...: panic in a function that cannot unwind`.
+101. Go is a notable exception in that it avoids the C runtime on some platforms, only using libc as an ABI stability boundary on platforms that require it e.g., Apple's `libSystem.dylib` and OpenBSD's `libc`.
+102. On Windows, these are DOS-style (which were in turn derived from CP/M-style) arguments.
+103. Before the loader runs, the program is just some bytes on a disk and the loader (which can be the kernel itself or a user-space system component like `ld.so` on Linux) maps those bytes into memory and hands off control.
+104. The most popular method… in the humble author's opinion.
+105. macOS does not support this. The C runtime does its own initialization and then just runs every user constructor function in the order the linker saw them.
+106. AIX has a special symbol naming convention for constructor functions: the `sinit` prefix, followed by a hexadecimal priority value.
+107. This will be discussed later in the post, but macOS synthesizes a `section$start` and `section$end` symbol for each section instead of a `__start_` and `__stop_` symbol.
+108. `linkme` creates distributed slices, but does not currently support WASM, and does not support mutable section data required to sort a section. `inventory` supports WASM, but requires a `ctor`-like function per item in the section.
+109. The Windows linker does not support this feature, but instead [defines an overall sort order for *symbols*](https://devblogs.microsoft.com/oldnewthing/20181107-00/?p=100155) that is effectively equivalent.
+110. Orphan sections have [a complicated algorithm for placement](https://maskray.me/blog/2024-06-02-understanding-orphan-sections).
+111. For example, an atomic value must always be re-read, and that may incur use of CPU cache which is pretty numerous these days, but definitely not infinite.
+112. [As long as it's `Sync`](https://doc.rust-lang.org/book/ch16-04-extensible-concurrency-sync-and-send.html). `Sync` means that it's safe to share a reference to the data between threads.
+113. This is a complex topic, and [Rust Atomics and Locks](https://marabos.nl/atomics/) is the best resource for learning more. Starting a new thread means that all the previous writes "happen before" anything on the new thread, but we'll leave the proof of this for the reader (or possibly a future post).
+114. Even taking a reference to a mutable static [is disallowed by default in Rust 2024!](https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html)
+115. Well, more accurately they *can* panic but they *shouldn't* panic. In fact you'll get a *double* panic: `thread '<unnamed>' panicked at ...: pre-main panic!` and then immediately `thread '<unnamed>' panicked at ...: panic in a function that cannot unwind`.
 
 </details>
 
