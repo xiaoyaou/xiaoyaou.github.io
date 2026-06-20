@@ -1141,21 +1141,21 @@ Thanks to my lovely wife [Mia](https://github.com/ojeda-e), [Benjamin Woodruff](
 <details markdown="1">
 <summary>原文</summary>
 
-[1]: Go is a notable exception in that it avoids the C runtime on some platforms, only using libc as an ABI stability boundary on platforms that require it e.g., Apple's `libSystem.dylib` and OpenBSD's `libc`.
-[2]: On Windows, these are DOS-style (which were in turn derived from CP/M-style) arguments.
-[3]: Before the loader runs, the program is just some bytes on a disk and the loader (which can be the kernel itself or a user-space system component like `ld.so` on Linux) maps those bytes into memory and hands off control.
-[4]: The most popular method… in the humble author's opinion.
-[5]: macOS does not support this. The C runtime does its own initialization and then just runs every user constructor function in the order the linker saw them.
-[6]: AIX has a special symbol naming convention for constructor functions: the `sinit` prefix, followed by a hexadecimal priority value.
-[7]: This will be discussed later in the post, but macOS synthesizes a `section$start` and `section$end` symbol for each section instead of a `__start_` and `__stop_` symbol.
-[8]: `linkme` creates distributed slices, but does not currently support WASM, and does not support mutable section data required to sort a section. `inventory` supports WASM, but requires a `ctor`-like function per item in the section.
-[9]: The Windows linker does not support this feature, but instead [defines an overall sort order for *symbols*](https://devblogs.microsoft.com/oldnewthing/20181107-00/?p=100155) that is effectively equivalent.
-[10]: Orphan sections have [a complicated algorithm for placement](https://maskray.me/blog/2024-06-02-understanding-orphan-sections).
-[11]: For example, an atomic value must always be re-read, and that may incur use of CPU cache which is pretty numerous these days, but definitely not infinite.
-[12]: [As long as it's `Sync`](https://doc.rust-lang.org/book/ch16-04-extensible-concurrency-sync-and-send.html). `Sync` means that it's safe to share a reference to the data between threads.
-[13]: This is a complex topic, and [Rust Atomics and Locks](https://marabos.nl/atomics/) is the best resource for learning more. Starting a new thread means that all the previous writes "happen before" anything on the new thread, but we'll leave the proof of this for the reader (or possibly a future post).
-[14]: Even taking a reference to a mutable static [is disallowed by default in Rust 2024!](https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html)
-[15]: Well, more accurately they *can* panic but they *shouldn't* panic. In fact you'll get a *double* panic: `thread '<unnamed>' panicked at ...: pre-main panic!` and then immediately `thread '<unnamed>' panicked at ...: panic in a function that cannot unwind`.
+1. Go is a notable exception in that it avoids the C runtime on some platforms, only using libc as an ABI stability boundary on platforms that require it e.g., Apple's `libSystem.dylib` and OpenBSD's `libc`.
+2. On Windows, these are DOS-style (which were in turn derived from CP/M-style) arguments.
+3. Before the loader runs, the program is just some bytes on a disk and the loader (which can be the kernel itself or a user-space system component like `ld.so` on Linux) maps those bytes into memory and hands off control.
+4. The most popular method… in the humble author's opinion.
+5. macOS does not support this. The C runtime does its own initialization and then just runs every user constructor function in the order the linker saw them.
+6. AIX has a special symbol naming convention for constructor functions: the `sinit` prefix, followed by a hexadecimal priority value.
+7. This will be discussed later in the post, but macOS synthesizes a `section$start` and `section$end` symbol for each section instead of a `__start_` and `__stop_` symbol.
+8. `linkme` creates distributed slices, but does not currently support WASM, and does not support mutable section data required to sort a section. `inventory` supports WASM, but requires a `ctor`-like function per item in the section.
+9. The Windows linker does not support this feature, but instead [defines an overall sort order for *symbols*](https://devblogs.microsoft.com/oldnewthing/20181107-00/?p=100155) that is effectively equivalent.
+10. Orphan sections have [a complicated algorithm for placement](https://maskray.me/blog/2024-06-02-understanding-orphan-sections).
+11. For example, an atomic value must always be re-read, and that may incur use of CPU cache which is pretty numerous these days, but definitely not infinite.
+12. [As long as it's `Sync`](https://doc.rust-lang.org/book/ch16-04-extensible-concurrency-sync-and-send.html). `Sync` means that it's safe to share a reference to the data between threads.
+13. This is a complex topic, and [Rust Atomics and Locks](https://marabos.nl/atomics/) is the best resource for learning more. Starting a new thread means that all the previous writes "happen before" anything on the new thread, but we'll leave the proof of this for the reader (or possibly a future post).
+14. Even taking a reference to a mutable static [is disallowed by default in Rust 2024!](https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html)
+15. Well, more accurately they *can* panic but they *shouldn't* panic. In fact you'll get a *double* panic: `thread '<unnamed>' panicked at ...: pre-main panic!` and then immediately `thread '<unnamed>' panicked at ...: panic in a function that cannot unwind`.
 
 </details>
 
